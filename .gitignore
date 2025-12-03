@@ -1,0 +1,5 @@
+venv/
+my_debate_env/
+geminienv/
+.DS_Store
+__pycache__/
