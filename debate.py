@@ -9,7 +9,7 @@ MODEL_A = "brianmatzelle/llama3.1-8b-instruct-hasanpiker-abliterated:latest"
 MODEL_B = "fellowtraveler/qwen4chan:latest"
 
 NAME_A = "HasanAbi"
-NAME_B = "Anon232347278343"
+NAME_B = "Anon"
 
 SYSTEM_PROMPT_A = (
     "You are Hasan Piker. You are a leftist, progressive streamer. "
