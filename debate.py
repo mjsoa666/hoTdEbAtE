@@ -5,11 +5,9 @@ import random
 import time
 import os
 
-# --- CONFIGURATION ---
 MODEL_A = "brianmatzelle/llama3.1-8b-instruct-hasanpiker-abliterated:latest"
 MODEL_B = "fellowtraveler/qwen4chan:latest"
 
-# DISPLAY NAMES
 NAME_A = "HasanAbi"
 NAME_B = "Anon232347278343"
 
@@ -32,19 +30,44 @@ TOPICS = [
     "Modern Immigration Policy",
     "Gender Identity Politics",
     "The role of the Police",
-    "Crypto and NFTs"
+    "Crypto and NFTs",
+    "The Israel-Palestine Conflict",
+    "Transgender Women in Female Sports",
+    "Race and IQ Statistics",
+    "The Legitimacy of the 2020 Election",
+    "Critical Race Theory in Schools",
+    "Vaccine Mandates and Big Pharma",
+    "The Andrew Tate Effect on Men",
+    "Reparations for Slavery",
+    "Abortion and Fetal Rights",
+    "The 'Great Replacement' Theory",
+    "Diversity, Equity, and Inclusion (DEI) Hiring",
+    "The Kyle Rittenhouse Verdict",
+    "Obesity and 'Fat Phobia'",
+    "The 19th Amendment (Women's Right to Vote)",
+    "George Floyd and the BLM Riots",
+    "Drag Queen Story Hour",
+    "The Ethics of Veganism vs Meat Eating",
+    "Funding the War in Ukraine",
+    "White Privilege vs Economic Class",
+    "The Epstein Client List",
+    "Pitbull Crime Statistics",
+    "Interracial Relationships",
+    "The Industrial Revolution and its Consequences",
+    "Islam in Europe",
+    "Cancel Culture vs Free Speech",
+    "Hate Speech Laws",
+    "Modern Art vs Classical Architecture"
 ]
 
-st.set_page_config(page_title="AI Fight Club", layout="wide")
-st.title(f"🤖 AI Debate Arena: {NAME_A} vs {NAME_B}")
+st.set_page_config(page_title="hoTtt dib88", layout="wide")
+st.title(f"h0t DeebATe: {NAME_A} vs {NAME_B}")
 
-# --- IMAGE DISPLAY ---
 if os.path.exists("image.jpg"):
     st.image("image.jpg", width=600)
 else:
     st.warning("⚠️ image.jpg not found. Place 'image.jpg' in the folder: " + os.getcwd())
 
-# --- SESSION STATE ---
 if "history" not in st.session_state:
     st.session_state.history = []
 if "running" not in st.session_state:
@@ -52,7 +75,6 @@ if "running" not in st.session_state:
 if "turn" not in st.session_state:
     st.session_state.turn = "A"
 
-# --- SIDEBAR ---
 with st.sidebar:
     st.header("Controls")
     if st.button("START DEBATE", type="primary"):
@@ -67,15 +89,14 @@ with st.sidebar:
         st.session_state.running = False
         st.rerun()
 
-# --- CHAT HISTORY ---
 for msg in st.session_state.history:
     if msg['role'] == "system":
         st.warning(msg['content'])
     elif msg.get('name') == NAME_A:
-        with st.chat_message(NAME_A, avatar="🟥"):
+        with st.chat_message(NAME_A, avatar="👨🏻"):
             st.write(f"**{NAME_A}:** {msg['content']}")
     elif msg.get('name') == NAME_B:
-        with st.chat_message(NAME_B, avatar="🟩"):
+        with st.chat_message(NAME_B, avatar="🐸"):
             st.write(f"**{NAME_B}:** {msg['content']}")
 
 # --- DEBATE LOOP ---
@@ -84,7 +105,7 @@ if st.session_state.running:
     try:
         if st.session_state.turn == "A":
             # HASAN'S TURN
-            with st.chat_message(NAME_A, avatar="🟥"):
+            with st.chat_message(NAME_A, avatar="👨🏻"):
                 with st.spinner(f"{NAME_A} is malding..."):
                     messages = [{'role': 'system', 'content': SYSTEM_PROMPT_A}]
                     for h in st.session_state.history[-8:]:
@@ -102,7 +123,7 @@ if st.session_state.running:
 
         elif st.session_state.turn == "B":
             # 4CHAN'S TURN
-            with st.chat_message(NAME_B, avatar="🟩"):
+            with st.chat_message(NAME_B, avatar="🐸"):
                 with st.spinner(f"{NAME_B} is typing..."):
                     messages = [{'role': 'system', 'content': SYSTEM_PROMPT_B}]
                     for h in st.session_state.history[-8:]:
