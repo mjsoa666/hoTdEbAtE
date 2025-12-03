@@ -63,11 +63,13 @@ TOPICS = [
 st.set_page_config(page_title="hoTtt dib88", layout="wide")
 st.title(f"h0t DeebATe: {NAME_A} vs {NAME_B}")
 
+# --- IMAGE LOADER ---
 if os.path.exists("image.jpg"):
     st.image("image.jpg", width=600)
 else:
     st.warning("⚠️ image.jpg not found. Place 'image.jpg' in the folder: " + os.getcwd())
 
+# --- SESSION STATE ---
 if "history" not in st.session_state:
     st.session_state.history = []
 if "running" not in st.session_state:
@@ -75,6 +77,7 @@ if "running" not in st.session_state:
 if "turn" not in st.session_state:
     st.session_state.turn = "A"
 
+# --- SIDEBAR ---
 with st.sidebar:
     st.header("Controls")
     if st.button("START DEBATE", type="primary"):
@@ -89,6 +92,8 @@ with st.sidebar:
         st.session_state.running = False
         st.rerun()
 
+# --- DISPLAY HISTORY ---
+# This acts as the SINGLE source of truth for display to prevent double posts
 for msg in st.session_state.history:
     if msg['role'] == "system":
         st.warning(msg['content'])
@@ -99,23 +104,22 @@ for msg in st.session_state.history:
         with st.chat_message(NAME_B, avatar="🐸"):
             st.write(f"**{NAME_B}:** {msg['content']}")
 
-# --- DEBATE LOOP ---
+# --- DEBATE LOGIC ---
 if st.session_state.running:
     time.sleep(1) # Pacing
     try:
         if st.session_state.turn == "A":
             # HASAN'S TURN
-            with st.chat_message(NAME_A, avatar="👨🏻"):
-                with st.spinner(f"{NAME_A} is malding..."):
-                    messages = [{'role': 'system', 'content': SYSTEM_PROMPT_A}]
-                    for h in st.session_state.history[-8:]:
-                        role = 'user' if h.get('name') == NAME_B else 'assistant'
-                        if h['role'] == 'system': role = 'user'
-                        messages.append({'role': role, 'content': h['content']})
+            with st.spinner(f"{NAME_A} is malding..."):
+                messages = [{'role': 'system', 'content': SYSTEM_PROMPT_A}]
+                for h in st.session_state.history[-8:]:
+                    role = 'user' if h.get('name') == NAME_B else 'assistant'
+                    if h['role'] == 'system': role = 'user'
+                    messages.append({'role': role, 'content': h['content']})
 
-                    response = ollama.chat(model=MODEL_A, messages=messages)
-                    reply = response['message']['content']
-                    st.write(f"**{NAME_A}:** {reply}")
+                response = ollama.chat(model=MODEL_A, messages=messages)
+                reply = response['message']['content']
+                # Removed the st.write() here to fix the double-vision glitch
             
             st.session_state.history.append({"role": "assistant", "name": NAME_A, "content": reply})
             st.session_state.turn = "B"
@@ -123,17 +127,16 @@ if st.session_state.running:
 
         elif st.session_state.turn == "B":
             # 4CHAN'S TURN
-            with st.chat_message(NAME_B, avatar="🐸"):
-                with st.spinner(f"{NAME_B} is typing..."):
-                    messages = [{'role': 'system', 'content': SYSTEM_PROMPT_B}]
-                    for h in st.session_state.history[-8:]:
-                        role = 'user' if h.get('name') == NAME_A else 'assistant'
-                        if h['role'] == 'system': role = 'user'
-                        messages.append({'role': role, 'content': h['content']})
+            with st.spinner(f"{NAME_B} is typing..."):
+                messages = [{'role': 'system', 'content': SYSTEM_PROMPT_B}]
+                for h in st.session_state.history[-8:]:
+                    role = 'user' if h.get('name') == NAME_A else 'assistant'
+                    if h['role'] == 'system': role = 'user'
+                    messages.append({'role': role, 'content': h['content']})
 
-                    response = ollama.chat(model=MODEL_B, messages=messages)
-                    reply = response['message']['content']
-                    st.write(f"**{NAME_B}:** {reply}")
+                response = ollama.chat(model=MODEL_B, messages=messages)
+                reply = response['message']['content']
+                # Removed the st.write() here to fix the double-vision glitch
 
             st.session_state.history.append({"role": "assistant", "name": NAME_B, "content": reply})
             st.session_state.turn = "A"
